@@ -13,30 +13,29 @@ import java.util.Scanner;
  * Created by lgs on 16-2-16.
  */
 public class CommentGenerator extends DefaultCommentGenerator {
-    private boolean suppressAllComments;
+    //是否添加列的注解
+    private boolean suppressColumnComments = true;
 
     public CommentGenerator() {
     }
 
     public void addConfigurationProperties(Properties properties) {
         super.addConfigurationProperties(properties);
-        this.suppressAllComments = StringUtility.isTrue(properties.getProperty("suppressAllComments"));
+        if (properties.getProperty("suppressColumnComments") != null) {
+            this.suppressColumnComments = StringUtility.isTrue(properties.getProperty("suppressColumnComments"));
+        }
     }
 
     public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
-        if (!this.suppressAllComments) {
+        if (this.suppressColumnComments) {
             StringBuilder sb = new StringBuilder();
             field.addJavaDocLine("/**");
-            sb.append(" * This field corresponds to the database column ");
+            sb.append(" * table ");
             sb.append(introspectedTable.getFullyQualifiedTable());
             sb.append('.');
+            sb.append(introspectedColumn.getActualColumnName());
             field.addJavaDocLine(sb.toString());
-            Scanner scanner = new Scanner(introspectedColumn.getRemarks());
-
-            while (scanner.hasNextLine()) {
-                field.addJavaDocLine(" * " + scanner.nextLine());
-            }
-
+            field.addJavaDocLine(" * " + introspectedColumn.getRemarks());
 //            this.addJavadocTag(field, false);
             field.addJavaDocLine(" */");
         }
