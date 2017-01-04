@@ -37,15 +37,15 @@ public class SeparateUserCodePlugin extends PluginAdapter {
     }
 
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        String userCodePackage = this.context.getJavaClientGeneratorConfiguration().getProperty("separateUserCodePlugin.targetPackage");
+        String userCodePackage = this.context.getJavaClientGeneratorConfiguration().getProperty(TARGET_PACKAGE_PROPERTY_NAME);
         if (userCodePackage == null) {
             userCodePackage = this.context.getJavaClientGeneratorConfiguration().getTargetPackage();
         }
 
-        String userCodeSearch = this.context.getJavaClientGeneratorConfiguration().getProperty("separateUserCodePlugin.search");
-        String userCodeReplace = this.context.getJavaClientGeneratorConfiguration().getProperty("separateUserCodePlugin.replace");
-        String userCodePrefix = this.context.getJavaClientGeneratorConfiguration().getProperty("separateUserCodePlugin.prefix");
-        String userCodeSuffix = this.context.getJavaClientGeneratorConfiguration().getProperty("separateUserCodePlugin.suffix");
+        String userCodeSearch = this.context.getJavaClientGeneratorConfiguration().getProperty(SEARCH_PROPERTY_NAME);
+        String userCodeReplace = this.context.getJavaClientGeneratorConfiguration().getProperty(REPLACE_PROPERTY_NAME);
+        String userCodePrefix = this.context.getJavaClientGeneratorConfiguration().getProperty(PREFIX_PROPERTY_NAME);
+        String userCodeSuffix = this.context.getJavaClientGeneratorConfiguration().getProperty(SUFFIX_PROPERTY_NAME);
         TypeFullName userInterfaceTypeFullName = new TypeFullName(userCodePackage, interfaze.getType().getShortName());
         userInterfaceTypeFullName.replaceTypeShortName(userCodeSearch, userCodeReplace).fixTypeShortName(userCodePrefix, userCodeSuffix);
         String userCodeTargetProject = this.context.getJavaClientGeneratorConfiguration().getTargetProject();
@@ -58,15 +58,15 @@ public class SeparateUserCodePlugin extends PluginAdapter {
             this.generatedJavaFileList.add(new GeneratedJavaFile(userMapperPackage, userCodeTargetProject, this.context.getJavaFormatter()));
         }
 
-        String userMapperPackage1 = this.context.getSqlMapGeneratorConfiguration().getProperty("separateUserCodePlugin.targetPackage");
+        String userMapperPackage1 = this.context.getSqlMapGeneratorConfiguration().getProperty(TARGET_PACKAGE_PROPERTY_NAME);
         if (userMapperPackage1 == null) {
             userMapperPackage1 = this.context.getSqlMapGeneratorConfiguration().getTargetPackage();
         }
 
-        String userMapperSearch = this.context.getSqlMapGeneratorConfiguration().getProperty("separateUserCodePlugin.search");
-        String userMapperReplace = this.context.getSqlMapGeneratorConfiguration().getProperty("separateUserCodePlugin.replace");
-        String userMapperPrefix = this.context.getSqlMapGeneratorConfiguration().getProperty("separateUserCodePlugin.prefix");
-        String userMapperSuffix = this.context.getSqlMapGeneratorConfiguration().getProperty("separateUserCodePlugin.suffix");
+        String userMapperSearch = this.context.getSqlMapGeneratorConfiguration().getProperty(SEARCH_PROPERTY_NAME);
+        String userMapperReplace = this.context.getSqlMapGeneratorConfiguration().getProperty(REPLACE_PROPERTY_NAME);
+        String userMapperPrefix = this.context.getSqlMapGeneratorConfiguration().getProperty(PREFIX_PROPERTY_NAME);
+        String userMapperSuffix = this.context.getSqlMapGeneratorConfiguration().getProperty(SUFFIX_PROPERTY_NAME);
         TypeFullName userMapperTypeFullName = new TypeFullName(userMapperPackage1, userInterfaceTypeFullName.getTypeShortName());
         userMapperTypeFullName.replaceTypeShortName(userMapperSearch, userMapperReplace).fixTypeShortName(userMapperPrefix, userMapperSuffix);
         String userMapperTargetProject = this.context.getSqlMapGeneratorConfiguration().getTargetProject();
