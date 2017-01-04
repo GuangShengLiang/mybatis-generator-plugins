@@ -25,47 +25,47 @@ public class RenamePlugin extends PluginAdapter {
     }
 
     public void initialized(IntrospectedTable introspectedTable) {
-        String contextSearch = this.context.getProperty("renamePlugin.search");
-        String contextReplace = this.context.getProperty("renamePlugin.replace");
+        String contextSearch = this.context.getProperty(SEARCH_PROPERTY_NAME);
+        String contextReplace = this.context.getProperty(REPLACE_PROPERTY_NAME);
         if (contextSearch != null && contextReplace != null) {
             this.replaceContext(introspectedTable, contextSearch, contextReplace);
         }
 
-        String modelSearch = this.context.getJavaModelGeneratorConfiguration().getProperty("renamePlugin.search");
-        String modelReplace = this.context.getJavaModelGeneratorConfiguration().getProperty("renamePlugin.replace");
+        String modelSearch = this.context.getJavaModelGeneratorConfiguration().getProperty(SEARCH_PROPERTY_NAME);
+        String modelReplace = this.context.getJavaModelGeneratorConfiguration().getProperty(REPLACE_PROPERTY_NAME);
         if (modelSearch != null && modelReplace != null) {
             this.replaceModel(introspectedTable, modelSearch, modelReplace);
         }
 
-        String sqlMapSearch = this.context.getSqlMapGeneratorConfiguration().getProperty("renamePlugin.search");
-        String sqlMapReplace = this.context.getSqlMapGeneratorConfiguration().getProperty("renamePlugin.replace");
+        String sqlMapSearch = this.context.getSqlMapGeneratorConfiguration().getProperty(SEARCH_PROPERTY_NAME);
+        String sqlMapReplace = this.context.getSqlMapGeneratorConfiguration().getProperty(REPLACE_PROPERTY_NAME);
         if (sqlMapSearch != null && sqlMapReplace != null) {
             this.replaceSqlMap(introspectedTable, sqlMapSearch, sqlMapReplace);
         }
 
-        String clientSearch = this.context.getJavaClientGeneratorConfiguration().getProperty("renamePlugin.search");
-        String clientReplace = this.context.getJavaClientGeneratorConfiguration().getProperty("renamePlugin.replace");
+        String clientSearch = this.context.getJavaClientGeneratorConfiguration().getProperty(SEARCH_PROPERTY_NAME);
+        String clientReplace = this.context.getJavaClientGeneratorConfiguration().getProperty(REPLACE_PROPERTY_NAME);
         if (clientSearch != null && clientReplace != null) {
             this.replaceClient(introspectedTable, clientSearch, clientReplace);
         }
 
-        String contextPrefix = this.context.getProperty("renamePlugin.prefix");
-        String contextSuffix = this.context.getProperty("renamePlugin.suffix");
-        String modelPrefix = this.context.getJavaModelGeneratorConfiguration().getProperty("renamePlugin.prefix");
-        String sqlMapPrefix = this.context.getSqlMapGeneratorConfiguration().getProperty("renamePlugin.prefix");
-        String clientPrefix = this.context.getJavaClientGeneratorConfiguration().getProperty("renamePlugin.prefix");
+        String contextPrefix = this.context.getProperty(PREFIX_PROPERTY_NAME);
+        String contextSuffix = this.context.getProperty(SUFFIX_PROPERTY_NAME);
+        String modelPrefix = this.context.getJavaModelGeneratorConfiguration().getProperty(PREFIX_PROPERTY_NAME);
+        String sqlMapPrefix = this.context.getSqlMapGeneratorConfiguration().getProperty(PREFIX_PROPERTY_NAME);
+        String clientPrefix = this.context.getJavaClientGeneratorConfiguration().getProperty(PREFIX_PROPERTY_NAME);
         modelPrefix = modelPrefix != null ? modelPrefix : (contextPrefix != null ? contextPrefix : "");
         sqlMapPrefix = sqlMapPrefix != null ? sqlMapPrefix : (contextPrefix != null ? contextPrefix : "");
         clientPrefix = clientPrefix != null ? clientPrefix : (contextPrefix != null ? contextPrefix : "");
-        String modelSuffix = this.context.getJavaModelGeneratorConfiguration().getProperty("renamePlugin.suffix");
-        String sqlMapSuffix = this.context.getSqlMapGeneratorConfiguration().getProperty("renamePlugin.suffix");
-        String clientSuffix = this.context.getJavaClientGeneratorConfiguration().getProperty("renamePlugin.suffix");
+        String modelSuffix = this.context.getJavaModelGeneratorConfiguration().getProperty(SUFFIX_PROPERTY_NAME);
+        String sqlMapSuffix = this.context.getSqlMapGeneratorConfiguration().getProperty(SUFFIX_PROPERTY_NAME);
+        String clientSuffix = this.context.getJavaClientGeneratorConfiguration().getProperty(SUFFIX_PROPERTY_NAME);
         modelSuffix = modelSuffix != null ? modelSuffix : (contextSuffix != null ? contextSuffix : "");
         sqlMapSuffix = sqlMapSuffix != null ? sqlMapSuffix : (contextSuffix != null ? contextSuffix : "");
         clientSuffix = clientSuffix != null ? clientSuffix : (contextSuffix != null ? contextSuffix : "");
         this.fixModel(introspectedTable, modelPrefix, modelSuffix);
         this.fixSqlMap(introspectedTable, sqlMapPrefix, sqlMapSuffix);
-        this.fixclient(introspectedTable, clientPrefix, clientSuffix);
+        this.fixClient(introspectedTable, clientPrefix, clientSuffix);
     }
 
     private void replaceContext(IntrospectedTable introspectedTable, String search, String replace) {
@@ -105,7 +105,7 @@ public class RenamePlugin extends PluginAdapter {
         introspectedTable.setIbatis2SqlMapFileName((new FileFullName(introspectedTable.getIbatis2SqlMapFileName())).fixTypeShortName(prefix, suffix).getFileShortName());
     }
 
-    private void fixclient(IntrospectedTable introspectedTable, String prefix, String suffix) {
+    private void fixClient(IntrospectedTable introspectedTable, String prefix, String suffix) {
         introspectedTable.setMyBatis3JavaMapperType((new TypeFullName(introspectedTable.getMyBatis3JavaMapperType())).fixTypeShortName(prefix, suffix).getTypeFullName());
         introspectedTable.setMyBatis3SqlProviderType((new TypeFullName(introspectedTable.getMyBatis3SqlProviderType())).fixTypeShortName(prefix, suffix).getTypeFullName());
         introspectedTable.setDAOInterfaceType((new TypeFullName(introspectedTable.getDAOInterfaceType())).fixTypeShortName(prefix, suffix).getTypeFullName());

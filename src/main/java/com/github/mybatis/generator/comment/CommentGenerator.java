@@ -6,6 +6,7 @@ import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
 import org.mybatis.generator.internal.util.StringUtility;
 
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -21,20 +22,19 @@ public class CommentGenerator extends DefaultCommentGenerator {
 
     public void addConfigurationProperties(Properties properties) {
         super.addConfigurationProperties(properties);
-        if (properties.getProperty("suppressColumnComments") != null) {
-            this.suppressColumnComments = StringUtility.isTrue(properties.getProperty("suppressColumnComments"));
-        }
+        Optional.ofNullable(properties.getProperty("suppressColumnComments")).ifPresent((e)->this.suppressColumnComments=Boolean.parseBoolean(e));
     }
 
     public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
         if (this.suppressColumnComments) {
-            StringBuilder sb = new StringBuilder();
             field.addJavaDocLine("/**");
+           /*
+            StringBuilder sb = new StringBuilder();
             sb.append(" * table ");
             sb.append(introspectedTable.getFullyQualifiedTable());
             sb.append('.');
             sb.append(introspectedColumn.getActualColumnName());
-            field.addJavaDocLine(sb.toString());
+            field.addJavaDocLine(sb.toString());*/
             field.addJavaDocLine(" * " + introspectedColumn.getRemarks());
 //            this.addJavadocTag(field, false);
             field.addJavaDocLine(" */");
