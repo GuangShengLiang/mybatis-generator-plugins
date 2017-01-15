@@ -27,17 +27,22 @@ public class CommentGenerator extends DefaultCommentGenerator {
 
     public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
         if (this.suppressColumnComments) {
-            field.addJavaDocLine("/**");
-           /*
+            Optional.ofNullable(introspectedColumn.getRemarks()).filter((e)->e.length()!=0).ifPresent((e)->{
+                field.addJavaDocLine("/**");
+                field.addJavaDocLine(" * " + introspectedColumn.getRemarks());
+                field.addJavaDocLine(" */");
+            });
+            /*field.addJavaDocLine("*//**");
+           *//*
             StringBuilder sb = new StringBuilder();
             sb.append(" * table ");
             sb.append(introspectedTable.getFullyQualifiedTable());
             sb.append('.');
             sb.append(introspectedColumn.getActualColumnName());
-            field.addJavaDocLine(sb.toString());*/
+            field.addJavaDocLine(sb.toString());*//*
             field.addJavaDocLine(" * " + introspectedColumn.getRemarks());
 //            this.addJavadocTag(field, false);
-            field.addJavaDocLine(" */");
+            field.addJavaDocLine(" *//*");*/
         }
     }
 }
